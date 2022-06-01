@@ -1,5 +1,6 @@
 const express = require('express');
 const externalModule = require('../logger/logger.js')
+const externalModule1 = require('../util/helper.js')
 
 const router = express.Router();
 
@@ -8,6 +9,9 @@ router.get('/test-me', function (req, res) {
     // console.log('The current batch is '+externalModule.batch)
    // externalModule.log()
     externalModule.welcome()
+    externalModule1.printdate()
+    externalModule1.printmonth()
+    externalModule1.get()
     res.send('My first ever api!')
 });
 
