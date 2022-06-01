@@ -5,7 +5,7 @@
 //     console.log('I am inside the log function')
 // }
 const welcome=function(){
-    console.log("i am vika skumar")
+    console.log("Welcome to my application.I am vikas kumar i am from radon cohort")
 }
 
 //module.exports.endpoint = endpoint
