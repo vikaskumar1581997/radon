@@ -81,9 +81,9 @@ router.get('/films', function (req, res) {
        //router.get('/films', function (req, res) {
            console.log("done")
         let f=[]
-       for(i=0;i<=film.length;i++){
+       for(i=1;i<=film.length+1;i++){
            if(req.params.filmsid==i){
-           let a=film[i]
+           let a=film[i-1]
             f.push(a)
             res.send(f)
             return
