@@ -25,14 +25,12 @@ res.send(book)
 }
 
 const findAuthor =async function(req,res){
-    let book = await BooksModel.findOneAndUpdate(  {name:"The fire 1" } ,  {price : 200} , { new: true}  );  
-console.log(book)
+    let book = await BooksModel.findOneAndUpdate(  {name:"The fire 1" } ,  {price : 240} ,  );
+//console.log(book)
 let updateddata=await AuthorsModel.find({author_id:book.author_id}).select({author_name:1,_id:0})
 console.log(updateddata)
     res.send(["name is "+updateddata[0].author_name,"price is "+book.price])
-  
-
-}
+  }
 
 
 const findBooks=async function(req,res){
@@ -41,9 +39,10 @@ const findBooks=async function(req,res){
 let allauthors=await AuthorsModel.find()
 //console.log(allauthors.length)
 let arr=[]
-for (let i=0;i<allauthors.length;i++){
-for (let j=0;j<allbooks.length;j++){
+for (let i=0;i<=allauthors.length-1;i++){
+for (let j=0;j<=allbooks.length-1;j++){
   
+
   if(allauthors[i].author_id===allbooks[ j].author_id)
     {
          let b=allauthors[i].author_id;
