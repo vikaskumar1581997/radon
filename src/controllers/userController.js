@@ -1,5 +1,6 @@
 const jwt = require("jsonwebtoken");
 const userModel = require("../models/userModel");
+const mw = require("../middleware/auth.js");
 
 const createUser = async function (abcd, xyz) {
   //You can name the req, res objects anything.
@@ -7,7 +8,7 @@ const createUser = async function (abcd, xyz) {
   //the second parameter is always the response
   let data = abcd.body;
   let savedData = await userModel.create(data);
-  console.log(abcd.newAtribute);
+  // console.log("jekwe",mw.decodedToken);
   xyz.send({ msg: savedData });
 };
 
@@ -17,7 +18,7 @@ const loginUser = async function (req, res) {
 
   let user = await userModel.findOne({ emailId: userName, password: password });
   if (!user)
-    return res.send({
+    return res.status(403).send({
       status: false,
       msg: "username or the password is not corerct",
     });
@@ -41,29 +42,35 @@ const loginUser = async function (req, res) {
 };
 
 const getUserData = async function (req, res) {
-  let token = req.headers["x-Auth-token"];
-  if (!token) token = req.headers["x-auth-token"];
+  // let token = req.headers["x-Auth-token"];
+  // if (!token) token = req.headers["x-auth-token"];
 
-  //If no token is present in the request header return error
-  if (!token) return res.send({ status: false, msg: "token must be present" });
+  // //If no token is present in the request header return error
+  // if (!token) return res.send({ status: false, msg: "token must be present" });
 
-  console.log(token);
+  // console.log("hdevw",token);
+  // console.log("edvwhe",mw.decodedToken);
   
   // If a token is present then decode the token with verify function
   // verify takes two inputs:
   // Input 1 is the token to be decoded
   // Input 2 is the same secret with which the token was generated
   // Check the value of the decoded token yourself
-  let decodedToken = jwt.verify(token, "functionup-thorium");
-  if (!decodedToken)
-    return res.send({ status: false, msg: "token is invalid" });
-
+  // let decodedToken = jwt.verify(token, "functionup-thorium");
+  // if (!decodedToken)
+  //   return res.send({ status: false, msg: "token is invalid" });
+try{
   let userId = req.params.userId;
+  if(!userId) return res.status(400).send("provide userId")
   let userDetails = await userModel.findById(userId);
   if (!userDetails)
     return res.send({ status: false, msg: "No such user exists" });
 
-  res.send({ status: true, data: userDetails });
+  res.status(200).send({ status: true, data: userDetails });
+} catch(err){
+        console.log("This is the error :", err.message)
+        res.status(500).send({ msg: "Error", error: err.message })
+}
 };
 
 const updateUser = async function (req, res) {
